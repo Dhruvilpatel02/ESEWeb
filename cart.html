@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - E-commerce</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <header class="bg-dark text-white text-center p-3">
+        <h1>Your Cart</h1>
+        <nav class="nav justify-content-center">
+            <a class="nav-link text-white" href="index.html">Home</a>
+            <a class="nav-link text-white" href="products.html">Products</a>
+            <a class="nav-link text-white" href="cart.html">Cart</a>
+        </nav>
+    </header>
+    <main class="container my-4">
+        <section class="cart-items">
+            <!-- Cart items will be displayed here -->
+        </section>
+    </main>
+
+    <script>
+        function displayCart() {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let cartContainer = document.querySelector('.cart-items');
+            let totalPrice = 0;
+
+            cartContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartContainer.innerHTML = '<p class="text-center">Your cart is empty.</p>';
+            } else {
+                cart.forEach(item => {
+                    let itemTotal = item.price * item.quantity;
+                    totalPrice += itemTotal;
+
+                    cartContainer.innerHTML += `
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h3 class="card-title">${item.name}</h3>
+                                <p>Price: $${item.price}</p>
+                                <p>Quantity: ${item.quantity}</p>
+                                <p>Subtotal: $${itemTotal.toFixed(2)}</p>
+                                <button class="btn btn-danger" onclick="removeFromCart(${item.id})">Remove</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                cartContainer.innerHTML += <p class="text-center"><strong>Total: $${totalPrice.toFixed(2)}</strong></p>;
+                cartContainer.innerHTML += <div class="text-center"><button class="btn btn-success" onclick="checkout()">Checkout</button></div>;
+            }
+        }
+
+        function removeFromCart(productId) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart = cart.filter(item => item.id !== productId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        function checkout() {
+            alert("Proceeding to checkout...");
+            localStorage.removeItem('cart'); // Clear the cart after checkout
+            displayCart(); // Refresh the cart display
+        }
+
+        displayCart();
+    </script>
+</body>
+</html>

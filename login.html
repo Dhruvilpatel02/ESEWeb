@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - E-commerce</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+</head>
+<body>
+    <header class="bg-dark text-white text-center p-3">
+        <h1>Login to Your Account</h1>
+        <nav class="nav justify-content-center">
+            <a class="nav-link text-white" href="index.html">Home</a>
+            <a class="nav-link text-white" href="products.html">Products</a>
+            <a class="nav-link text-white" href="cart.html">Cart</a>
+            <a class="nav-link text-white" href="login.html">Login</a>
+        </nav>
+    </header>
+    <main class="container my-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">Login</h3>
+                        <form onsubmit="login(event)">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                        </form>
+                        <p class="text-center mt-3">Don't have an account? <a href="#" onclick="registerUser()">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function login(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            // Retrieve the stored user data from localStorage
+            const storedUser = JSON.parse(localStorage.getItem("user"));
+
+            // Check if user exists and password matches
+            if (storedUser && storedUser.email === email && storedUser.password === password) {
+                alert("Login successful!");
+                window.location.href = "index.html"; // Redirect to home page
+            } else {
+                alert("Incorrect email or password. Please try again.");
+            }
+        }
+
+        function registerUser() {
+            const email = prompt("Enter your email:");
+            const password = prompt("Enter your password:");
+
+            if (email && password) {
+                const user = { email: email, password: password };
+                localStorage.setItem("user", JSON.stringify(user)); // Save user in localStorage
+                alert("Registration successful! You can now log in.");
+            } else {
+                alert("Email and password are required for registration.");
+            }
+        }
+    </script>
+</body>
+</html>
